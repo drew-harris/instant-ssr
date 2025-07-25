@@ -7,8 +7,11 @@ import { DefaultCatchBoundary } from "./components/DefaultCatchBoundary";
 import { NotFound } from "./components/NotFound";
 import { createFetcherFn } from "./instantFramework";
 import schema from "./instant.schema";
+import { auth } from "./auth";
 
-export function createRouterServer(instantArgs?: { key?: string }) {
+export function createRouterServer(
+  possibleSession: Awaited<ReturnType<typeof auth.api.getSession>>,
+) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -28,10 +31,12 @@ export function createRouterServer(instantArgs?: { key?: string }) {
     return adminResult;
   });
 
+  queryClient.setQueryData(["auth"], possibleSession);
+
   return routerWithQueryClient(
     createTanStackRouter({
       routeTree,
-      context: { queryClient, instantFetch: fetcher },
+      context: { queryClient, prefetchQuery: fetcher },
       defaultPreload: "intent",
       defaultErrorComponent: DefaultCatchBoundary,
       defaultNotFoundComponent: () => <NotFound />,

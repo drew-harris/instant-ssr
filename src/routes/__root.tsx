@@ -15,10 +15,11 @@ import { NotFound } from "~/components/NotFound";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
 import { InstantFetch } from "~/instantFramework";
+import { InstantAuthProvider } from "~/providers/InstantAuthProvider";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
-  instantFetch: InstantFetch;
+  prefetchQuery: InstantFetch;
 }>()({
   head: () => ({
     meta: [
@@ -96,7 +97,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           </Link>{" "}
         </div>
         <hr />
-        {children}
+        <InstantAuthProvider>{children}</InstantAuthProvider>
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />
         <Scripts />
