@@ -1,0 +1,24 @@
+diff --git a/dist/esm/createStartHandler.d.ts b/dist/esm/createStartHandler.d.ts
+index 55742c6960f02489e6d9aad9f73effb65c7b4066..73c4c1d472d41395568a3154705ed3f9c03447e3 100644
+--- a/dist/esm/createStartHandler.d.ts
++++ b/dist/esm/createStartHandler.d.ts
+@@ -3,5 +3,5 @@ import { AnyRouter, Awaitable } from '@tanstack/router-core';
+ import { HandlerCallback } from '@tanstack/router-core/ssr/server';
+ export type CustomizeStartHandler<TRouter extends AnyRouter> = (cb: HandlerCallback<TRouter>) => RequestHandler;
+ export declare function createStartHandler<TRouter extends AnyRouter>({ createRouter, }: {
+-    createRouter: () => Awaitable<TRouter>;
++    createRouter: (request?: Request) => Awaitable<TRouter>;
+ }): CustomizeStartHandler<TRouter>;
+diff --git a/dist/esm/createStartHandler.js b/dist/esm/createStartHandler.js
+index 94d845d6bca6d31065e87560402e662bb725cd43..fc1efcc05b4571a77b8965f1b91fe14068b068aa 100644
+--- a/dist/esm/createStartHandler.js
++++ b/dist/esm/createStartHandler.js
+@@ -49,7 +49,7 @@ function createStartHandler({
+       const url = new URL(request.url);
+       const href = decodeURIComponent(url.href.replace(url.origin, ""));
+       const APP_BASE = process.env.TSS_APP_BASE || "/";
+-      const router = await createRouter();
++      const router = await createRouter(request);
+       const history = createMemoryHistory({
+         initialEntries: [href]
+       });

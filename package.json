@@ -36,5 +36,8 @@
     "typescript": "^5.7.2",
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4"
+  },
+  "patchedDependencies": {
+    "@tanstack/start-server-core@1.129.8": "patches/@tanstack%2Fstart-server-core@1.129.8.patch"
   }
 }
